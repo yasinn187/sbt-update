@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
+    <link rel="stylesheet" href="./style.css">
+    <title>Smart Budget Tracker</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #6d5dfc, #4bb3fd);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .login-container,
+        .main-container {
+            text-align: center;
+            width: 100%;
+            max-width: 450px;
+            background-color: white;
+            border-radius: 12px;
+            padding: 40px 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #4bb3fd;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 40px;
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            transition: border-color 0.3s ease;
+        }
+
+        .login-form input:focus {
+            border-color: #4bb3fd;
+        }
+
+        .login-form button {
+            padding: 12px;
+            width: 100%;
+            background-color: #6d5dfc;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-form button:hover {
+            background-color: #5742dc;
+        }
+
+        .login-form p a {
+            color: #6d5dfc;
+        }
+
+        .main-container {
+            padding: 30px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            color: #6d5dfc;
+            font-size: 24px;
+        }
+
+        .user-button {
+            padding: 10px 20px;
+            background-color: #4bb3fd;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .user-button:hover {
+            background-color: #399fdc;
+        }
+
+        .log-out {
+            padding: 10px 20px;
+            background-color: #6d5dfc; /* Same color as user-button */
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .log-out:hover {
+            background-color: #5742dc; /* Darker shade on hover */
+        }
+
+        .calendar-chart {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .calendar,
+        .chart {
+            width: 48%;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .calendar:hover,
+        .chart:hover {
+            transform: translateY(-5px);
+        }
+
+        .bubbles {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+
+        .bubble {
+            width: 120px;
+            height: 120px;
+            background-color: #6d5dfc;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            gap: 5px;
+        }
+
+        .bubble p {
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .bubble:hover {
+            background-color: #5742dc;
+            transform: scale(1.1);
+        }
+
+        .categories {
+            margin-top: 30px;
+        }
+
+        .category-container {
+            display: flex;
+            justify-content: space-between;
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .category-container:hover {
+            transform: translateX(10px);
+        }
+
+        .add-button {
+            background-color: #8ea0ba;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 32px;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+        }
+
+        .add-button:hover {
+            background-color: #8ec2e7;
+        }
+
+        /* Modal styles */
+        #modal {
+            display: none;
+            /* Hide by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Semi-transparent background */
+            justify-content: center;
+            align-items: center;
+        }
+
+        #modal div {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main-container">
+        <header>
+            <h1>Smart Budget Tracker</h1>
+            <button class="user-button">User Page</button>
+            <button class="user-button log-out">Log Out</button>
+        </header>
+
+        <div class="calendar-chart">
+            <div class="calendar">
+                <h3>Calendar</h3>
+                <p>Daily Spending Overview</p>
+            </div>
+            <div class="chart">
+                <h3>Spending Chart</h3>
+                <p>Spending per Category</p>
+            </div>
+        </div>
+
+        <div class="bubbles">
+            <div class="bubble income">
+                <p>Income</p>
+                <p class="amount">00.00</p>
+            </div>
+            <div class="bubble expense">
+                <p>Expense</p>
+                <p class="amount">00.00</p>
+            </div>
+            <div class="bubble total">
+                <p>Total</p>
+                <p class="amount">00.00</p>
+            </div>
+        </div>
+
+        <div class="categories">
+            <h3>Spending Categories</h3>
+            <div class="category-container">
+                <div class="category">Housing</div>
+                <div class="amount-column">00.00</div>
+            </div>
+            <div class="category-container">
+                <div class="category">Utilities</div>
+                <div class="amount-column">00.00</div>
+            </div>
+            <div class="category-container">
+                <div class="category">Food & Groceries</div>
+                <div class="amount-column">00.00</div>
+            </div>
+            <div class="category-container">
+                <div class="category">Transportation</div>
+                <div class="amount-column">00.00</div>
+            </div>
+            <div class="category-container">
+                <div class="category">Entertainment</div>
+                <div class="amount-column">00.00</div>
+            </div>
+        </div>
+
+        <button class="add-button">+</button>
+        <!-- Modal for adding an entry -->
+
+        <div id="modal" style="display: none;">
+            <div style="background-color: white; padding: 20px; border-radius: 10px;">
+                <h3>Add Entry</h3>
+                <input type="text" id="amount" placeholder="Amount" required>
+                <select id="category" required>
+                    <option value="" disabled selected>Select Category</option>
+                    <option value="Housing">Housing</option>
+                    <option value="Utilities">Utilities</option>
+                    <option value="Food">Food</option>
+                    <option value="Transportation">Transportation</option>
+                    <option value="Entertainment">Entertainment</option>
+                </select>
+                <button id="add-entry">Add Entry</button>
+                <button id="close-modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
